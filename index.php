@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-
+<html>
+<head>
+    <title>My test task</title>
+</head>
 <?php
 require_once("path.php");
-require_once(ROOT . '/app/database/db.php');
 require_once(ROOT . '/app/controllers/leads.php');
 ?>
 
 
 <body>
-<!-- Including navigation bar with two buttons -->
+<!-- Навігаційна панель з двома кнопками -->
 <?php include(ROOT . '/app/includes/navbar.php') ?>
+<!-- Форма, у якій заповнюються дані -->
 <h1>Форма для відправки даних</h1>
 <form action="index.php" method="POST">
     <label for="firstName">Ім'я:</label><br>
