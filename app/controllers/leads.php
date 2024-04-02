@@ -67,11 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date_pick'])) {
     if (isset($_POST['date_to'])) {
         $data = ['date_to' => $_POST['date_to']];
     }
+    $date_to = $data['date_to'];
     curl_setopt($api, CURLOPT_URL, API_URL . 'getstatuses');
     curl_setopt($api, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($api, CURLOPT_HTTPHEADER, array("token:" . TOKEN, 'Content-Type: application/json'));
     curl_setopt($api, CURLOPT_POSTFIELDS, json_encode($data));
-
     $leads = curl_exec($api);
 
     if ($leads === false) {
@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date_pick'])) {
         dd(curl_error($api));
     } else {
         $data = json_decode($leads, true);
+        $date_from = $data['date_from'];
         $leads = $data['data'];
     }
     curl_close($api);

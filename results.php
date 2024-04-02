@@ -11,6 +11,10 @@
 <?php include(ROOT . '/app/includes/navbar.php') ?>
 <h1>Ліди</h1>
 <form action="results.php" method="POST">
+    <?php if(isset($date_from)): ?>
+    <label for="date">Початкова дата:</label><br>
+    <input type="datetime-local" value="<?=$date_from?>" readonly name==date_from><br>
+    <?php endif;?>
 <!--    Doesn't work at all -->
 <!--    <label for="date">Оберіть початкову дату:</label><br>-->
 <!--    <input type="datetime-local" id="date" name="date_from"><br>-->
