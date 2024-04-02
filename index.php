@@ -14,6 +14,9 @@ require_once(ROOT . '/app/controllers/leads.php');
 <?php include(ROOT . '/app/includes/navbar.php') ?>
 <!-- Форма, у якій заповнюються дані -->
 <h1>Форма для відправки даних</h1>
+<?php foreach($errorMessages as $message):?>
+<p style="color: brown"><?=$message?></p>
+<?php endforeach;?>
 <form action="index.php" method="POST">
     <label for="firstName">Ім'я:</label><br>
     <input type="text" id="firstName" name="firstName" required><br>

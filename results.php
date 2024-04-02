@@ -5,15 +5,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Лиды</title>
+    <title>Ліди</title>
 </head>
 <body>
 <?php include(ROOT . '/app/includes/navbar.php') ?>
-<h1>Лиды</h1>
+<h1>Ліди</h1>
 <form action="results.php" method="get">
-    <label for="date">Выберите дату:</label><br>
-    <input type="date" id="date" name="date">
-    <input type="submit" value="Фильтровать">
+    <label for="date">Оберіть початкову дату:</label><br>
+    <input type="date" id="date" name="date_from"><br>
+    <label for="secondDate">Оберіть кінцеву дату:</label><br>
+    <input type="date" id="secondDate" name="date_to"><br>
+    <input type="submit" value="Фільтрувати">
 </form>
 <table>
     <tr>
