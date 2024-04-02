@@ -1,6 +1,8 @@
 <?php
 
 $errorMessages = [];
+
+// Post method for form
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addlead'])) {
     $errorMessages = checkInput($_POST);
     if (count($errorMessages) === 0) {
@@ -23,11 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addlead'])) {
         curl_setopt($api, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'token: ' . TOKEN));
         curl_setopt($api, CURLOPT_POSTFIELDS, json_encode($data));
         $output = curl_exec($api);
+        // Check any errors while executing
         if (curl_errno($api)) {
             $errorMessages[] = "Помилка CURL: " . curl_error($api);
         } else {
             $decoded_output = json_decode($output);
-            if(!$decoded_output['status']) {
+            if (!$decoded_output['status']) {
                 $errorMessages[] = $decoded_output['error'];
             }
         }
@@ -35,30 +38,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addlead'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && str_contains($_SERVER['REQUEST_URI'], 'results') ) {
+// Get all leads
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && str_contains($_SERVER['REQUEST_URI'], 'results')) {
     $api = curl_init();
-    $url = API_URL . 'getstatuses';
-    curl_setopt($api, CURLOPT_URL, $url);
+
+    curl_setopt($api, CURLOPT_URL, API_URL . 'getstatuses');
     curl_setopt($api, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($api, CURLOPT_HTTPHEADER, array("token:" . TOKEN));
-    if(isset($_GET['date_from']) && isset($_GET['date_to'])) {
-        $queryParams = http_build_query([
-            'date_from' => $_GET['date_from'],
-            'date_to' => $_GET['date_to'],
-        ]);
-        curl_setopt($api, CURLOPT_POSTFIELDS, $queryParams);
-    }
+
     $leads = curl_exec($api);
-    curl_close($api);
 
     if ($leads === false) {
         $errorMessages[] = "Помилка отримання даних";
+        dd(curl_error($api));
+    } else {
+        // gets decoded data
+        $data = json_decode($leads, true);
+        $leads = $data['data'];
+    }
+    curl_close($api);
+
+}
+
+// Get leads with date pick (works only with date to, date from doesn't change)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['date_pick'])) {
+    $api = curl_init();
+    $data = [];
+    if (isset($_POST['date_to'])) {
+        $data = ['date_to' => $_POST['date_to']];
+    }
+    curl_setopt($api, CURLOPT_URL, API_URL . 'getstatuses');
+    curl_setopt($api, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($api, CURLOPT_HTTPHEADER, array("token:" . TOKEN, 'Content-Type: application/json'));
+    curl_setopt($api, CURLOPT_POSTFIELDS, json_encode($data));
+
+    $leads = curl_exec($api);
+
+    if ($leads === false) {
+        $errorMessages[] = "Помилка отримання даних";
+        dd(curl_error($api));
     } else {
         $data = json_decode($leads, true);
         $leads = $data['data'];
     }
+    curl_close($api);
 }
 
+// Debug function
 function dd($data)
 {
     echo '<pre>';
@@ -66,6 +92,7 @@ function dd($data)
     echo '</pre>';
 }
 
+// Method for checking inputs, not necessary because validation on api works fine
 function checkInput($data)
 {
     $errorMessages = [];

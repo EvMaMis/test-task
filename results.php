@@ -10,12 +10,13 @@
 <body>
 <?php include(ROOT . '/app/includes/navbar.php') ?>
 <h1>Ліди</h1>
-<form action="results.php" method="get">
-    <label for="date">Оберіть початкову дату:</label><br>
-    <input type="date" id="date" name="date_from"><br>
+<form action="results.php" method="POST">
+<!--    Doesn't work at all -->
+<!--    <label for="date">Оберіть початкову дату:</label><br>-->
+<!--    <input type="datetime-local" id="date" name="date_from"><br>-->
     <label for="secondDate">Оберіть кінцеву дату:</label><br>
-    <input type="date" id="secondDate" name="date_to"><br>
-    <input type="submit" value="Фільтрувати">
+    <input type="datetime-local" id="secondDate" name="date_to"><br>
+    <input type="submit" value="Фільтрувати" name="date_pick" style="margin: 10px 0;">
 </form>
 <table>
     <tr>
