@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addlead'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && str_contains($_SERVER['REQUEST_URI'], 'results') ) {
     $api = curl_init();
     $url = API_URL . 'getstatuses';
     curl_setopt($api, CURLOPT_URL, $url);
